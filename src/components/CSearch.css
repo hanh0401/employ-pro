@@ -1,0 +1,24 @@
+.search-background {
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .search-box {
+    background-color: rgba(255, 255, 255, 0.9); /* Light background for contrast */
+    border-radius: 8px;
+    max-width: 450px;
+    padding: 20px;
+  }
+  
+  .form-control {
+    border-radius: 25px;
+  }
+  
+  button {
+    border-radius: 25px;
+  }
+  

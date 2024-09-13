@@ -1,0 +1,61 @@
+.cv-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .cv-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .cv-content {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+  .cv-card {
+    width: 50%;
+    text-align: center;
+  }
+  
+  .cv-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .btn-create-cv {
+    padding: 10px 20px;
+  }
+  
+  .btn-sample-cv {
+    background-color: #28a745;
+    border: none;
+  }
+  
+  .btn-link {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .cv-item {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
+  .cv-img {
+    max-width: 100px;
+    margin-top: 10px;
+  }
+  
+  .no-cv-text {
+    margin-top: 20px;
+  }
+  
