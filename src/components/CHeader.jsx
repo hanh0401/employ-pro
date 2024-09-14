@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-
 import { Link, useNavigate } from "react-router-dom"
-import { Navbar, Container, Nav } from 'react-bootstrap'
+import { Navbar, Container, Nav, Modal, Button } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const CHeader = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Giả sử trạng thái đăng nhập
     const navigate = useNavigate();
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
   
     const [userProfile, setUserProfile] = useState(null);
 
@@ -24,9 +24,21 @@ const CHeader = () => {
       localStorage.removeItem('userProfile');
       setIsLoggedIn(false); // Đặt lại trạng thái đăng xuất
       setUserProfile(null); // Xóa thông tin người dùng
+      setShowLogoutModal(false);
       // Xử lý logic đăng xuất (xóa token, session, v.v.)
       navigate('/'); // Điều hướng về trang chủ
     };
+
+    // Hiển thị modal xác nhận
+    const handleLogoutClick = () => {
+      setShowLogoutModal(true);
+    };
+
+    // Hủy đăng xuất, đóng modal
+    const handleCloseModal = () => {
+      setShowLogoutModal(false);
+    };
+
   return <>
     <Navbar bg="white" expand="lg" className="justify-content-between">
       <Container>
@@ -56,11 +68,27 @@ const CHeader = () => {
         </Navbar.Collapse>
         <Nav.Link as={Link} to="/employers/Home" className="order-sm-3">
             Dành cho nhà tuyển dụng
-            {userProfile && <div>{userProfile.username}</div>}
+            {userProfile?.username && <div>{userProfile.username}</div>}
         </Nav.Link>
         
       </Container>
     </Navbar>
+
+    {/* Modal xác nhận đăng xuất */}
+    <Modal show={showLogoutModal} onHide={handleCloseModal} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Xác nhận đăng xuất</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>Bạn có chắc chắn muốn đăng xuất không?</Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleCloseModal}>
+          Hủy
+        </Button>
+        <Button variant="primary" onClick={handleLogout}>
+          Đăng xuất
+        </Button>
+      </Modal.Footer>
+    </Modal>
   </>
 };
 

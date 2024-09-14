@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Spinner } from 'react-bootstrap';
-import { APIClient } from "../backend/api.ts"; // Import APIClient
+import axios from 'axios';
 import './JobCard.css';
 
 const JobCard = ({ searchCriteria }) => {
@@ -9,18 +9,16 @@ const JobCard = ({ searchCriteria }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const api_client = new APIClient();
-    
+  useEffect(() => {    
     // Lấy danh sách công việc và công ty từ API
     const fetchData = async () => {
       try {
         const [jobsResponse, companiesResponse] = await Promise.all([
-          api_client.getJobs(),
-          api_client.getCompanies()
+          axios.get('http://127.0.0.1:8000/api/jobs'),
+          axios.get('http://127.0.0.1:8000/api/employer')
         ]);
 
-        if (jobsResponse.success && companiesResponse.success) {
+        if (jobsResponse.status === 200 && companiesResponse.status === 200) {
           setJobs(jobsResponse.data); // Lưu danh sách công việc
           setCompanies(companiesResponse.data); // Lưu danh sách công ty
         } else {

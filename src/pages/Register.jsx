@@ -1,38 +1,35 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { APIClient } from '../backend/api.ts';
+import axios from 'axios';
 import { ssrDynamicImportKey } from 'vite/runtime';
 import './Register.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    // username: '',
+    username: '',
     password: '',
     email: '',
-    username: '',
     address:'',
     phone_number: '',
     confirmPassword: '',
-    // userRole: 'candidates',
   })
 
   const [userRole, setUserRole] = useState('candidate');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const api_client = new APIClient();
-
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value});
   };
 
   const handleRoleChange = (e) => {
-    setFormData({ ...formData, role: e.target.value});
+    // setFormData({ ...formData, role: e.target.value});
+    setUserRole(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form data:', formData);
+    // console.log('Form data:', formData);
 
     // Logic để xử lý đăng ký
     if (formData.password !== formData.confirmPassword) {
@@ -41,12 +38,15 @@ const Register = () => {
     }
 
     try {
-
+      // Tạo dữ liệu gửi đi (bỏ trường confirmPassword)
       const { confirmPassword, ...dataToSend } = formData;
-      const response = await api_client.register(dataToSend);
-      console.log(response);
+
+      // Gọi API đăng ký
+      const response = await axios.post('http://127.0.0.1:8000/api/register/', dataToSend);
+
+      // console.log(response);
       // Kiểm tra phản hồi từ server
-      if (response.success) {
+      if (response.data.id) {
         // console.log('DL đến server:', dataToSend);
         // Lưu token vào localStorage hoặc state tùy ý
         // localStorage.setItem('authToken', response.data.token);
@@ -60,12 +60,8 @@ const Register = () => {
           setError(`Đăng ký thất bại. Vui lòng kiểm tra lại thông tin. ${response.error.response.data.email[0] || response.error.response.data.email[0] }`);
       } 
     } catch (error) {
-      // if (error.response && error.response.data) {
-      //   // Hiển thị lỗi chi tiết từ backend
-      //   setError(error.response.data.detail || 'Đăng ký thất bại. Hãy thử lại.');
-      // } else {
-        setError('Đã có lỗi xảy ra. Vui lòng thử lại.');
-      // }
+        console.error('Lỗi khi đăng ký:', error.response?.data);
+        setError(error.response?.data?.detail || 'Đã có lỗi xảy ra. Vui lòng thử lại.');
     }
   };
 

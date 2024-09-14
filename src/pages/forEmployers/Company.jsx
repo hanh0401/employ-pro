@@ -7,13 +7,18 @@ import Footer from '../../components/Footer.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CompanyProfile = () => {
-  // Initial form data with empty values
+
+  const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+  // Initial form data for candidate's personal profile
+  // // Initial form data with empty values
   const [formData, setFormData] = useState({
     companyName: '',
-    address: '',
+    email: userProfile?.email,
+    phone: userProfile?.phone,
+    companySize: '',
+    industry: '',
+    location: userProfile?.address,
     website: '',
-    phone: '',
-    email: '',
     description: '',
   });
 
@@ -33,10 +38,12 @@ const CompanyProfile = () => {
     try {
       const response = await axios.put('/company/profile/', {
         name: formData.companyName,
-        address: formData.address,
-        website: formData.website,
-        phone: formData.phone,
         email: formData.email,
+        phone: formData.phone,
+        size: formData.companySize,
+        industry: formData.industry,
+        location: formData.location,
+        website: formData.website,
         description: formData.description,
       });
 
@@ -80,6 +87,66 @@ const CompanyProfile = () => {
                   </Form.Group>
                 </Col>
 
+                {/* Email */}
+                <Col md={6}>
+                  <Form.Group controlId="email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      disabled={!isEditing}
+                      placeholder="Nhập email"
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Phone number */}
+                <Col md={6}>
+                  <Form.Group controlId="phone">
+                    <Form.Label>Số điện thoại</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      disabled={!isEditing}
+                      placeholder="Nhập số điện thoại"
+                    />
+                  </Form.Group>
+                </Col>
+                
+                {/* Company Size */}
+                <Col md={6}>
+                  <Form.Group controlId="companySize">
+                    <Form.Label>Quy mô</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="companySize"
+                      value={formData.companySize}
+                      onChange={handleInputChange}
+                      disabled={!isEditing}
+                      placeholder="Nhập quy mô công ty"
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Industry */}
+                <Col md={6}>
+                  <Form.Group controlId="industry">
+                    <Form.Label>Ngành</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="industry"
+                      value={formData.industry}
+                      onChange={handleInputChange}
+                      disabled={!isEditing}
+                      placeholder="Nhập tên ngành"
+                    />
+                  </Form.Group>
+                </Col>
+
                 {/* Description */}
                 <Col md={6}>
                   <Form.Group controlId="description">
@@ -98,14 +165,14 @@ const CompanyProfile = () => {
               </Row>
 
               <Row>
-                {/* Address */}
+                {/* Location */}
                 <Col md={6}>
-                  <Form.Group controlId="address">
+                  <Form.Group controlId="lcation">
                     <Form.Label>Địa chỉ</Form.Label>
                     <Form.Control
                       type="text"
-                      name="address"
-                      value={formData.address}
+                      name="location"
+                      value={formData.location}
                       onChange={handleInputChange}
                       disabled={!isEditing}
                       placeholder="Nhập địa chỉ"
@@ -124,38 +191,6 @@ const CompanyProfile = () => {
                       onChange={handleInputChange}
                       disabled={!isEditing}
                       placeholder="Nhập địa chỉ website"
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row>
-                {/* Phone */}
-                <Col md={6}>
-                  <Form.Group controlId="phone">
-                    <Form.Label>Số điện thoại</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      disabled={!isEditing}
-                      placeholder="Nhập số điện thoại"
-                    />
-                  </Form.Group>
-                </Col>
-
-                {/* Email */}
-                <Col md={6}>
-                  <Form.Group controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      disabled={!isEditing}
-                      placeholder="Nhập địa chỉ email"
                     />
                   </Form.Group>
                 </Col>

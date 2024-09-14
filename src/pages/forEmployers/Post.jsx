@@ -2,7 +2,7 @@ import EHeader from "../../components/EHeader.jsx";
 import Footer from "../../components/Footer.jsx";
 import axious from '../../backend/axios.jsx'
 
-import { Card, Button, Form, Alert, Modal, Breadcrumb } from "react-bootstrap";
+import { Card, Button, Form, Alert, Modal, Breadcrumb, FormGroup, FormLabel } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios, { Axios } from "axios";
 import { useState } from "react";
@@ -13,11 +13,14 @@ const [hasCreatedJob, setHasCreatedJob] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [jobList, setJobList] = useState([]);
   const [jobData, setJobData] = useState({
-      position: '',
-      description: '',
-      requirements: '',
-      salary: '',
-      location: ''
+    title: '',
+    description: '',
+    location: '',
+    employment_type: '',
+    salary_range: '',
+    requirements: '',
+    posted_date: '',
+    expiration_date: ''
   });
   const [showAlert, setShowAlert] = useState(false) // Trạng thái để hiển thị thông báo
   const [alertMessage, setAlertMessage] = useState('');  // Thông báo nội dung
@@ -43,11 +46,14 @@ const [hasCreatedJob, setHasCreatedJob] = useState(false);
           
           // Reset form data
           setJobData({
-              position: '',
+              title: '',
               description: '',
+              location: '',
+              employment_type: '',
+              salary_range: '',
               requirements: '',
-              salary: '',
-              location: ''
+              posted_date: '',
+              expiration_date: '',
           });
 
           // Hiển thị thông báo lưu thành công
@@ -96,11 +102,14 @@ const [hasCreatedJob, setHasCreatedJob] = useState(false);
                         <div>
                             {jobList.map((job, index) => (
                                 <div key={index} className="mb-3 text-left">
-                                    <h5>Vị trí: {job.position}</h5>
+                                    <h5>Tên công việc: {job.title}</h5>
                                     <p>Mô tả: {job.description}</p>
-                                    <p>Yêu cầu: {job.requirements}</p>
-                                    <p>Mức lương: {job.salary}</p>
                                     <p>Địa điểm: {job.location}</p>
+                                    <p>Hình thức: {job.employment_type}</p>
+                                    <p>Mức lương: {job.salary_range}</p>
+                                    <p>Yêu cầu: {job.requirements}</p>
+                                    <p>Ngày đăng: {job.posted_date}</p>
+                                    <p>Ngày hết hạn: {job.expiration_date}</p>
                                 </div>
                             ))}
                         </div>
@@ -119,12 +128,12 @@ const [hasCreatedJob, setHasCreatedJob] = useState(false);
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
-                        <Form.Group controlId="position" className="mt-3">
-                        <Form.Label>Vị trí tuyển dụng</Form.Label>
+                        <Form.Group controlId="title" className="mt-3">
+                        <Form.Label>Tên công việc</Form.Label>
                         <Form.Control
                             type="text"
-                            name="position"
-                            value={jobData.position}
+                            name="title"
+                            value={jobData.title}
                             onChange={handleChange}
                             required
                         />
@@ -139,6 +148,35 @@ const [hasCreatedJob, setHasCreatedJob] = useState(false);
                             required
                         />
                         </Form.Group>
+                        <Form.Group controlId="location" className="mt-3">
+                        <Form.Label>Địa chỉ</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="location"
+                            value={jobData.location}
+                            onChange={handleChange}
+                            required
+                        />
+                        </Form.Group>
+                        <FormGroup controlId="" className="mt-3">
+                        <FormLabel>Hình thức</FormLabel>
+                        <Form.Select value={jobData.employment_type} name="employment_type" onChange={handleChange} required>
+                            <option value="">Chon hình thức</option>
+                            <option value="full-time">Full-time</option>
+                            <option value="part-time">Part-time</option>
+                            <option value="contract">Contract</option>
+                        </Form.Select>
+                        </FormGroup>
+                        <Form.Group controlId="salary_range" className="mt-3">
+                        <Form.Label>Lương</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="salary_range"
+                            value={jobData.salary_range}
+                            onChange={handleChange}
+                            required
+                        />
+                        </Form.Group>
                         <Form.Group controlId="requirements" className="mt-3">
                         <Form.Label>Yêu cầu ứng viên</Form.Label>
                         <Form.Control
@@ -149,22 +187,22 @@ const [hasCreatedJob, setHasCreatedJob] = useState(false);
                             required
                         />
                         </Form.Group>
-                        <Form.Group controlId="salary" className="mt-3">
-                        <Form.Label>Mức lương</Form.Label>
+                        <Form.Group controlId="posted_date" className="mt-3">
+                        <Form.Label>Ngày đăng</Form.Label>
                         <Form.Control
-                            type="text"
-                            name="salary"
-                            value={jobData.salary}
+                            type="date"
+                            name="posted_date"
+                            value={jobData.posted_date}
                             onChange={handleChange}
                             required
                         />
                         </Form.Group>
-                        <Form.Group controlId="location" className="mt-3">
-                        <Form.Label>Địa điểm làm việc</Form.Label>
+                        <Form.Group controlId="expiration_date" className="mt-3">
+                        <Form.Label>Ngày hết hạn</Form.Label>
                         <Form.Control
-                            type="text"
-                            name="location"
-                            value={jobData.location}
+                            type="date"
+                            name="expiration_date"
+                            value={jobData.expiration_date}
                             onChange={handleChange}
                             required
                         />

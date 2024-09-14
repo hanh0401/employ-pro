@@ -1,8 +1,7 @@
-import axios from "../backend/axios.jsx";
+import axios from "axios";
 import React, { useState } from "react";
 import {useNavigate} from 'react-router-dom';
 import { Link } from "react-router-dom";
-import { APIClient } from "../backend/api.ts"
 import './Login.css';
 import Footer from "../components/Footer.jsx";
 
@@ -16,8 +15,6 @@ const Login = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const api_client = new APIClient(); // Tạo API Client
-
     // Xử lý thay đổi khi nhập thông tin đăng nhập
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,22 +25,22 @@ const Login = () => {
         e.preventDefault();
         
         try {
-            // Đối với API khác đăng nhập/ký thì trước khi gọi thêm dòng sau
-            // api_client.setAuthToken("ma-token-cua-nguoi-dung")
-            // Gọi API đăng nhập
-            const response = await api_client.login(formData);
-            console.log(response);
+            const response = await axios.post('http://127.0.0.1:8000/api/token/', {
+                email: formData.email,
+                password: formData.password
+            });
+
             // Kiểm tra phản hồi từ server
-            if (response.success) {
-                console.log(response);
-                // Lưu token vào localStorage hoặc state tùy ý
+            if (response.data.access) {
+                console.log(response.data);
+                // Lưu token vào localStorage
                 localStorage.setItem('authToken', response.data.access);
-                api_client.setAuthToken(response.data.access);
-                const userProfile = await api_client.getProfile();
-                console.log(userProfile);
-                if(userProfile){
-                    localStorage.setItem('userProfile', JSON.stringify(userProfile.data));
-                }
+                localStorage.setItem('refreshToken', response.data.refresh);
+                // const userProfile = await api_client.getProfile();
+                // console.log(userProfile);
+                // if(userProfile){
+                //     localStorage.setItem('userProfile', JSON.stringify(userProfile.data));
+                // }
 
                 
                 // Điều hướng đến trang tương ứng dựa trên vai trò
